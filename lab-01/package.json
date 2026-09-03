@@ -1,0 +1,15 @@
+{
+  "name": "lab-01",
+  "version": "1.0.0",
+  "description": "This is lab 1 of my Internet of Things (IOT) course",
+  "license": "ISC",
+  "author": "Ukachi Agnes Eze-Mbey",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
