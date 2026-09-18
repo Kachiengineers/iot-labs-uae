@@ -1,4 +1,6 @@
 const DB = require('../db');
+
+// Create a room after validating its required name.
 async function createARoom(req, res) {
     const name = req.body?.name;
     if (!name?.trim()) {
@@ -15,6 +17,8 @@ async function createARoom(req, res) {
         }
     }
 }
+
+// Return every room in the database.
 async function getAllRooms(_, res) {
     try {
         const rooms = await DB.getAllRooms();
@@ -24,6 +28,7 @@ async function getAllRooms(_, res) {
     }
 }
 
+// Return one room, rejecting malformed IDs before querying PostgreSQL.
 async function getRoomById(req, res) {
     const id = req.params?.id;
     if (!/^\d+$/.test(id)) {
@@ -43,6 +48,7 @@ async function getRoomById(req, res) {
     }
 }
 
+// Validate and update the light state for one room.
 async function updateRoomLight(req, res) {
     const id = req.params?.id;
     const light = req.body?.light;
@@ -63,6 +69,7 @@ async function updateRoomLight(req, res) {
     }
 }
 
+// Delete one room and return the deleted record.
 async function deleteRoom(req, res) {
     const id = req.params?.id;
     if (!/^\d+$/.test(id)) {
@@ -79,6 +86,7 @@ async function deleteRoom(req, res) {
     }
 }
 
+// Bulk light controls for all rooms.
 async function turnOnAllLights(_, res) {
     try {
         const updatedRooms = await DB.turnOnAllLights();
@@ -97,6 +105,7 @@ async function turnOffAllLights(_, res) {
     }
 }
 
+// Temperature reporting endpoints.
 async function getAverageTemperature(_, res) {
     try {
         const averageTemperature = await DB.getAverageTemperature();

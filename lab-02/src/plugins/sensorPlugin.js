@@ -2,6 +2,7 @@
 
 const { pool } = require('../db');
 
+// Insert a generated temperature reading for one room.
 // Function to log temperature every 10 seconds
 const logTemperature = async (roomId) => {
     try {
@@ -19,6 +20,8 @@ const logTemperature = async (roomId) => {
         console.error('Error logging temperature:', err);
     }
 };
+
+// Periodically find all rooms and record a reading for each one.
 // Start logging temperature every 10 seconds
 const startLogging = () => {
     setInterval(async () => {

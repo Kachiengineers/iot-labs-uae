@@ -1,7 +1,10 @@
 const PG = require('pg');
 require('dotenv').config();
 
+// A shared connection pool is reused by all database operations.
 const pool = new PG.Pool();
+
+// Create the tables required by the room and temperature features.
 async function setupDatabase() {
     const text = `
 
@@ -26,6 +29,7 @@ async function setupDatabase() {
         }
 }
 
+// Room CRUD operations.
 async function createRoom(name) {
     const text = 'INSERT INTO rooms (name) VALUES ($1) RETURNING *';
     const values = [name];
@@ -60,6 +64,7 @@ async function deleteRoom(id) {
     return dbResponse.rows[0];
 }
 
+// Update the light state for every room at once.
 async function turnOnAllLights() {
     const text = 'UPDATE rooms SET light = TRUE';
     const dbResponse = await pool.query(text);
@@ -72,6 +77,7 @@ async function turnOffAllLights() {
     return dbResponse.rowCount;
 }
 
+// Temperature reporting queries.
 async function getAverageTemperature() {
     const text = 'SELECT AVG(temperature) AS average_temperature FROM temperature_logs';
     const dbResponse = await pool.query(text);
