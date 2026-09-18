@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const DB = require('./db');
 const RoomRoutes = require('./routes/roomRoutes');
+const SensorPlugin = require('./plugins/sensorPlugin');
 app.use(express.json());
 function home(req, res) {
 res.status(200).json({ message: 'This is lab 02' });
@@ -11,6 +12,7 @@ app.post('/api/rooms', RoomRoutes.createARoom);
 app.get('/api/rooms', RoomRoutes.getAllRooms);
 app.patch('/api/rooms/lights/on', RoomRoutes.turnOnAllLights);
 app.patch('/api/rooms/lights/off', RoomRoutes.turnOffAllLights);
+app.get('/api/rooms/temperatures', RoomRoutes.getLatestTemperatures);
 app.get('/api/rooms/average-temperature', RoomRoutes.getAverageTemperature);
 app.get('/api/rooms/:id', RoomRoutes.getRoomById);
 app.patch('/api/rooms/:id/light', RoomRoutes.updateRoomLight);
@@ -25,5 +27,8 @@ app.post(/(.*)/, function _404(_, res) {
 const port = 3000;
 app.listen(port, function() {
   console.log(`Server is running on http://localhost:${port}`);
-  DB.setupDatabase()
+  DB.setupDatabase().then(() => {
+    SensorPlugin.startLogging();
+  });
 });
+

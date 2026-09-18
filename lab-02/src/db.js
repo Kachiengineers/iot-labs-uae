@@ -77,6 +77,23 @@ async function getAverageTemperature() {
     const dbResponse = await pool.query(text);
     return dbResponse.rows[0];
 }
+
+async function getLatestTemperatures() {
+    const text = `
+        SELECT rooms.id, rooms.name, latest.temperature, latest.timestamp
+        FROM rooms
+        LEFT JOIN LATERAL (
+            SELECT temperature, timestamp
+            FROM temperature_logs
+            WHERE room_id = rooms.id
+            ORDER BY timestamp DESC
+            LIMIT 1
+        ) AS latest ON TRUE
+        ORDER BY rooms.id
+    `;
+    const dbResponse = await pool.query(text);
+    return dbResponse.rows;
+}
 module.exports = {
     setupDatabase,
     createRoom,
@@ -87,5 +104,6 @@ module.exports = {
     turnOnAllLights,
     turnOffAllLights,
     getAverageTemperature,
+    getLatestTemperatures,
     pool
 }

@@ -68,6 +68,11 @@ async function getAverageTemperature(_, res) {
     const averageTemperature = await DB.getAverageTemperature();
     res.status(200).json(averageTemperature);
 }
+
+async function getLatestTemperatures(_, res) {
+    const temperatures = await DB.getLatestTemperatures();
+    res.status(200).json(temperatures);
+}
 module.exports = {
     createARoom,
     getAllRooms,
@@ -76,5 +81,6 @@ module.exports = {
     deleteRoom,
     turnOnAllLights,
     turnOffAllLights,
-    getAverageTemperature
+    getAverageTemperature,
+    getLatestTemperatures
 }
