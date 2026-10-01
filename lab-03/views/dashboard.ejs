@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Room Assistant</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>Smart Room Assistant</h1>
+    <h2>Implemented by Ukachi</h2>
+    <div class="all-lights">
+      <button id="all-on" class="btn btn-primary">Turn On All Lights</button>
+      <button id="all-off" class="btn btn-secondary">Turn Off All Lights</button>
+    </div>
+    <p id="status-message" class="status-message" role="status"></p>
+  </header>
+
+  <main>
+    <section class="rooms" id="rooms">
+      <% for (let i = 0; i < 2; i++) { %>
+        <% const room = rooms[i]; %>
+        <% if (room) { %>
+          <article class="room-card" data-slot="<%= i %>" data-room-id="<%= room.id %>" data-light="<%= room.light %>">
+            <h2 class="room-name"><%= room.name %></h2>
+            <img class="bulb" src="/img/<%= room.light ? 'bulb-on' : 'bulb-off' %>.svg"
+                 alt="Light is <%= room.light ? 'on' : 'off' %>">
+            <p class="light-status">Light: <strong><%= room.light ? 'On' : 'Off' %></strong></p>
+            <p class="temperature">
+              <span class="temp-value"><%= room.temperature != null ? room.temperature + ' °C' : 'No reading yet' %></span>
+            </p>
+            <button class="btn toggle-btn"><%= room.light ? 'Turn Off' : 'Turn On' %></button>
+          </article>
+        <% } else { %>
+          <article class="room-card empty" data-slot="<%= i %>">
+            <h2 class="room-name">No room</h2>
+            <p class="empty-text">Create a room with POST /api/rooms to see it here.</p>
+          </article>
+        <% } %>
+      <% } %>
+    </section>
+
+    <section class="chart-section">
+      <h2>Temperature Trend</h2>
+      <p class="chart-note">Last 30 readings per room, refreshed every 10 seconds.</p>
+      <div class="chart-container">
+        <canvas id="temperature-chart" aria-label="Line chart of temperature over time for each room" role="img"></canvas>
+      </div>
+      <p id="chart-empty" class="chart-empty" hidden>No temperature readings yet.</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/js/theme-state.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

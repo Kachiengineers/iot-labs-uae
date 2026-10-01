@@ -1,0 +1,223 @@
+/* Colour tokens: light mode by default, dark mode when the dashboard state requires it. */
+:root {
+  color-scheme: light;
+  --bg: #f4f4f2;
+  --surface: #fcfcfb;
+  --border: #deddd8;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --grid: #e6e5e0;
+  --accent: #2a78d6;
+  --accent-text: #ffffff;
+  --error: #c62828;
+  --series-1: #2a78d6; /* room 1 line */
+  --series-2: #eb6834; /* room 2 line */
+}
+
+body[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f4f2;
+  --surface: #fcfcfb;
+  --border: #deddd8;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --grid: #e6e5e0;
+  --accent: #2a78d6;
+  --accent-text: #ffffff;
+  --error: #c62828;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+}
+
+body[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211;
+  --surface: #1a1a19;
+  --border: #33322f;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --grid: #2a2a28;
+  --accent: #3987e5;
+  --error: #ef6b6b;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+}
+
+@media (prefers-color-scheme: dark) {
+  body:not([data-theme]) {
+    color-scheme: dark;
+    --bg: #121211;
+    --surface: #1a1a19;
+    --border: #33322f;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --grid: #2a2a28;
+    --accent: #3987e5;
+    --error: #ef6b6b;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* Header with the all-lights buttons, shown prominently at the top. */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 16px 8px;
+  text-align: center;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.all-lights {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.status-message {
+  min-height: 1.5em;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.status-message.error {
+  color: var(--error);
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Two room cards side by side; they stack on narrow screens. */
+.rooms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.room-card {
+  flex: 1 1 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.room-card.empty {
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.room-name {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.bulb {
+  width: 96px;
+  height: 96px;
+}
+
+.light-status,
+.temperature,
+.empty-text {
+  margin: 0;
+}
+
+.temp-value {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+/* Buttons */
+.btn {
+  min-width: 140px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.05s;
+}
+
+.btn:hover {
+  opacity: 0.88;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.btn-primary,
+.toggle-btn {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+}
+
+/* Temperature chart below the room cards. */
+.chart-section {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.chart-section h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.chart-note,
+.chart-empty {
+  margin: 4px 0 16px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 320px;
+}

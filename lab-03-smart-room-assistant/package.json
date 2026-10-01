@@ -1,0 +1,21 @@
+{
+  "name": "lab-03-smart-room-assistant",
+  "version": "1.0.0",
+  "description": "A front-end interface for the Smart Room Assistant with a dashboard for temperature and light control.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "live-server",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "chart.js": "^3.7.0",
+    "ejs": "^3.1.6"
+  },
+  "devDependencies": {
+    "webpack": "^5.64.0",
+    "webpack-cli": "^4.9.1",
+    "live-server": "^1.2.1"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}
