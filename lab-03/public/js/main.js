@@ -19,6 +19,24 @@ function getVisibleRooms() {
     }));
 }
 
+function syncAllLightsButtons(rooms) {
+    const allOnButton = document.getElementById('all-on');
+    const allOffButton = document.getElementById('all-off');
+
+    if (!allOnButton || !allOffButton) {
+        return;
+    }
+
+    const allLightsOn = rooms.length > 0 && rooms.every(room => room && room.light === true);
+    const allLightsOff = rooms.length > 0 && rooms.every(room => room && room.light === false);
+
+    allOnButton.classList.toggle('is-active', allLightsOn);
+    allOffButton.classList.toggle('is-active', allLightsOff);
+
+    allOnButton.classList.toggle('is-inactive', !allLightsOn);
+    allOffButton.classList.toggle('is-inactive', !allLightsOff);
+}
+
 // Small helper: fetch JSON and throw a readable error on non-2xx responses.
 async function requestJSON(url, options) {
     const response = await fetch(url, options);
@@ -81,6 +99,7 @@ async function loadRooms() {
         if (card) card.textContent = room.name;
     });
     applyThemeFromRooms(dashboardRooms);
+    syncAllLightsButtons(dashboardRooms);
 }
 
 // Update one card in place after its light changes.
@@ -124,6 +143,14 @@ async function setAllLights(state) {
     try {
         const result = await requestJSON(`/api/rooms/lights/${state}`, { method: 'PATCH' });
         await loadRooms();
+        const allOnButton = document.getElementById('all-on');
+        const allOffButton = document.getElementById('all-off');
+        if (allOnButton && allOffButton) {
+            allOnButton.classList.toggle('is-active', state === 'on');
+            allOffButton.classList.toggle('is-active', state === 'off');
+            allOnButton.classList.toggle('is-inactive', state !== 'on');
+            allOffButton.classList.toggle('is-inactive', state !== 'off');
+        }
         showMessage(result.message || `All lights turned ${state}.`);
     } catch (err) {
         showMessage(`Could not turn all lights ${state}: ${err.message}`, true);
