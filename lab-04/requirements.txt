@@ -1,0 +1,6 @@
+gpiozero
+lgpio
+adafruit-blinka
+adafruit-circuitpython-dht
+RPLCD
+smbus2
