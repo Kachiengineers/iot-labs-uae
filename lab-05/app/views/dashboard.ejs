@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Room Assistant</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/lab05.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>Smart Room Assistant</h1>
+    <h2>Implemented by Ukachi</h2>
+    <div class="all-lights">
+      <button id="all-on" class="btn btn-primary">Turn On All Lights</button>
+      <button id="all-off" class="btn btn-secondary">Turn Off All Lights</button>
+    </div>
+    <p id="status-message" class="status-message" role="status"></p>
+  </header>
+
+  <main>
+    <%# The first render comes from the server; main.js redraws the cards every 3 s. %>
+    <section class="rooms" id="rooms" data-room-ids="<%= roomIds %>">
+      <% if (rooms.length === 0) { %>
+        <article class="room-card empty" data-slot="0">
+          <h2 class="room-name">No room</h2>
+          <p class="empty-text">Create a room with POST /api/rooms and set its id in DASHBOARD_ROOM_IDS.</p>
+        </article>
+      <% } %>
+      <% rooms.forEach(function(room, i) { %>
+        <% if (room) { %>
+          <article class="room-card" data-slot="<%= i %>" data-room-id="<%= room.id %>" data-light="<%= room.light %>">
+            <div class="room-header">
+              <h2 class="room-name"><%= room.name %></h2>
+              <span class="occupancy <%= room.occupied ? 'is-occupied' : 'is-empty' %>"><%= room.occupied ? 'Occupied' : 'Empty' %></span>
+            </div>
+            <img class="bulb" src="/img/<%= room.light ? 'bulb-on' : 'bulb-off' %>.svg"
+                 alt="Light is <%= room.light ? 'on' : 'off' %>">
+            <p class="light-status">Light: <strong><%= room.light ? 'On' : 'Off' %></strong></p>
+            <div class="readings">
+              <p class="temperature"><span class="reading-label">Temperature</span><span class="temp-value"><%= room.temperature != null ? room.temperature.toFixed(1) + ' °C' : '--' %></span></p>
+              <p class="humidity"><span class="reading-label">Humidity</span><span class="humidity-value"><%= room.humidity != null ? room.humidity.toFixed(1) + ' %' : '--' %></span></p>
+            </div>
+            <p class="last-reading"><%= room.temperature != null ? 'Loading…' : 'Waiting for the first reading from the node' %></p>
+            <button class="btn toggle-btn"><%= room.light ? 'Turn Off' : 'Turn On' %></button>
+          </article>
+        <% } else { %>
+          <article class="room-card empty" data-slot="<%= i %>">
+            <h2 class="room-name">No room</h2>
+            <p class="empty-text">Create a room with POST /api/rooms and set its id in DASHBOARD_ROOM_IDS.</p>
+          </article>
+        <% } %>
+      <% }) %>
+    </section>
+
+    <section class="chart-section">
+      <h2>Temperature Trend</h2>
+      <p class="chart-note">Real readings from the room node, last 10 minutes, refreshed every 3 seconds.</p>
+      <div class="chart-container">
+        <canvas id="temperature-chart" aria-label="Line chart of temperature over time for each room" role="img"></canvas>
+      </div>
+      <p id="chart-empty" class="chart-empty" hidden>No temperature readings yet. Start room_node.py on the Pi.</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/js/theme-state.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

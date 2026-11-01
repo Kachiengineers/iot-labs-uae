@@ -1,0 +1,61 @@
+/* Lab 05 additions: occupancy badge, humidity, last-reading line.
+   Loaded after styles.css, so the Lab 03 look is kept and only these are added. */
+
+.room-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.occupancy {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.occupancy.is-occupied {
+    background: rgba(18, 183, 106, 0.18);
+    color: #0b8a4f;
+}
+
+.occupancy.is-empty {
+    background: rgba(102, 112, 133, 0.18);
+    color: #667085;
+}
+
+body[data-theme="dark"] .occupancy.is-occupied { color: #47cd89; }
+body[data-theme="dark"] .occupancy.is-empty { color: #98a2b3; }
+
+.readings {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin: 8px 0 4px;
+}
+
+.readings p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+}
+
+.reading-label {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.last-reading {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin: 4px 0 10px;
+}
+
+.last-reading.is-stale {
+    color: #d92d20;
+    opacity: 1;
+    font-weight: 600;
+}

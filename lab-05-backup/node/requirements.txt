@@ -1,0 +1,2 @@
+# Lab 05 adds requests. Keep the Lab 04 lines (DHT, LCD, GPIO libraries) below it.
+requests>=2.31
